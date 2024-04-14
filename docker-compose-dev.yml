@@ -15,6 +15,7 @@ services:
     - postgres
     - redis
     environment:
+      DEBUG: 'True'
       SECRET_KEY: 'secret_key_for_development_3969b4b149439648a52aa663bd740a4f'
       SESSION_COOKIE_SECURE: 0
       DB_HOST: postgres
