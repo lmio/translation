@@ -22,7 +22,8 @@ from trans.utils import get_translate_edit_permission, can_save_translate, is_tr
     unleash_edit_token, get_task_by_contest_and_name, get_trans_by_user_and_task, \
     can_user_change_translation, convert_html_to_pdf, add_page_numbers_to_pdf, \
     pdf_response, get_requested_user, build_printed_draft_pdf, render_pdf_template
-from trans.utils.pdf import get_file_name_from_path, build_pdf, merge_final_pdfs
+from trans.utils.pdf import get_file_name_from_path, build_pdf, merge_final_pdfs, \
+    get_pdf_template_context
 from trans.views.admin import FreezeUserContest
 
 from print_job_queue import queue
@@ -187,6 +188,24 @@ class TranslationPDF(TranslationView):
         translation = self._get_translation_by_contest_and_task_type(request, user, contest_slug, task_name, task_type)
         pdf_file_path = build_pdf(translation, task_type)
         return pdf_response(pdf_file_path, get_file_name_from_path(pdf_file_path))
+
+
+class TranslationHTML(TranslationView):
+    def get(self, request, contest_slug, task_name, task_type):
+        user = User.objects.get(username=request.user)
+        translation = self._get_translation_by_contest_and_task_type(request, user, contest_slug, task_name, task_type)
+        context = get_pdf_template_context(
+                translation,
+                task_type,
+                # These paths need to be serving static/image assets contrasted
+                # to pdf generation invocation which requires *local* paths,
+                # i.e. /usr/... ones.
+                # Hardcoding those is a hack, and we should be able to get this
+                # from django in a nicer way.
+                static_path='/static',
+                images_path='/media/images/',
+                pdf_output=True)
+        return render(request, 'pdf-template.html', context=context)
 
 
 class TranslationPrint(TranslationView):

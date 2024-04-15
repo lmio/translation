@@ -16,8 +16,14 @@ from trans.context_processors import ioi_settings
 
 logger = logging.getLogger(__name__)
 
-def render_pdf_template(translation, task_type,
-                        static_path, images_path, pdf_output):
+def get_pdf_template_context(
+        translation, task_type,
+        static_path=None, images_path=None, pdf_output=True):
+    if static_path is None:
+        static_path = settings.STATIC_ROOT
+    if images_path is None:
+        images_path = settings.MEDIA_ROOT + 'images/'
+
     requested_user = translation.user
     task = translation.task
 
@@ -41,6 +47,17 @@ def render_pdf_template(translation, task_type,
         'text_font_base64': requested_user.text_font_base64
     }
     context.update(ioi_settings(None))
+    return context
+
+
+def render_pdf_template(translation, task_type,
+                        static_path, images_path, pdf_output):
+    context = get_pdf_template_context(
+            translation,
+            task_type,
+            static_path=static_path,
+            images_path=images_path,
+            pdf_output=pdf_output)
     return render_to_string('pdf-template.html', context=context)
 
 # pdf file paths (excepting final pdf path)
