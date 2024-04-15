@@ -16,7 +16,7 @@ The IOI automation scripts already take care of the above security concerns.
 
 ## Basic Concepts
 
-There are three main administrator roles: admin, ISC, and staff.
+There are three main administrator roles: admin, HSC, and staff.
 
 Firstly, admin adds countries and languages data. Then, for each country (also called "team"), admin creates a user for the team, which is a pair of (country, language).
 
@@ -33,7 +33,7 @@ A team consists of:
 
 A team which has one or more on-site contestant is referred to as "on-site team".
 
-Before the start of a contest translation day, admin creates a contest in the system. Then, ISC creates the tasks for the contest. For each task, ISC adds the problem statement in English, and then release a version.
+Before the start of a contest translation day, admin creates a contest in the system. Then, HSC creates the tasks for the contest. For each task, HSC adds the problem statement in English, and then release a version.
 
 After all tasks have been released, admin then marks the contest as public. After which, each team can log in and see the tasks, then start translating. A translating team can also choose not to translate some tasks.
 
@@ -46,7 +46,7 @@ When the translation (and requested translations from other languages, if any) f
 
 ## User Management
 
-There are 3 administrator users: `admin`, `ISC`, and `staff`. The IOI automation scripts will add those users. If Docker is used, the users will need to be added manually:
+There are 3 administrator users: `admin`, `HSC`, and `staff`. The IOI automation scripts will add those users. If Docker is used, the users will need to be added manually:
 
 ```
 docker-compose exec app bash
@@ -61,10 +61,10 @@ python3 manage.py loaddata initial_data.json
 The roles of the users are as follows:
 
 - `admin`: has full access to the Django admin interface.
-- `ISC`: manages tasks.
+- `HSC`: manages tasks.
 - `staff`: monitors translations.
 
-(ISC stands for International Scientific Committee.)
+(HSC stands for Host Scientific Committee.)
 
 ### Changing administrator user passwords
 
@@ -101,14 +101,14 @@ To add a contest, log in as `admin`, go to `Trans` -> `Contests` -> `Add contest
 
 ### Adding tasks
 
-To add a task, log in as `ISC`. Then, click the menu on the top-right corner, and select `Add New Task`:
+To add a task, log in as `HSC`. Then, click the menu on the top-right corner, and select `Add New Task`:
 
 | <img src="./images/add-new-task-1.png" width="300"> | <img src="./images/add-new-task-2.png" width="300"> |
 |-|-|
 
 ### Writing task statements
 
-ISC can start adding task statement via the editor on the left side:
+HSC can start adding task statement via the editor on the left side:
 
 <img src="./images/writing-task-statement.png" width="600">
 
@@ -122,9 +122,9 @@ To insert an image in the task statement, admin must first upload the image file
 
 then, the image can be added in the statement using this Markdown syntax: `![](hello_image1.png)`.
 
-### Releasing ISC version
+### Releasing HSC version
 
-Once the statement of a task is final, ISC should release a version for the task:
+Once the statement of a task is final, HSC should release a version for the task:
 
 | <img src="./images/releasing-isc-version-1.png" width="300"> | <img src="./images/releasing-isc-version-2.png" width="400"> |
 |-|-|
@@ -133,7 +133,7 @@ Continue adding all tasks for the contest.
 
 ### Making contests public
 
-After ISC has added all tasks for a contest, admin can make the contest public by ticking the `Public` checkbox:
+After HSC has added all tasks for a contest, admin can make the contest public by ticking the `Public` checkbox:
 
 <img src="./images/making-contest-public-1.png" width="300">
 
