@@ -1,0 +1,40 @@
+server {
+    listen 443 ssl default_server reuseport;
+    listen [::]:443 ssl default_server reuseport;
+    server_name ${TRANSLATE_FQDN};
+
+    auth_basic "BOI 2024";
+    auth_basic_user_file /etc/nginx/passwords/translation.htpasswd;
+
+    ssl_certificate /etc/letsencrypt/live/${TRANSLATE_FQDN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${TRANSLATE_FQDN}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/${TRANSLATE_FQDN}/chain.pem;
+    ssl_dhparam /etc/letsencrypt/dhparams/dhparam.pem;
+    charset utf-8;
+
+    gzip             on;
+    gzip_comp_level  2;
+    gzip_min_length  1000;
+    gzip_proxied     expired no-cache no-store private auth;
+    gzip_types       text/plain application/x-javascript text/xml text/css application/xml;
+
+    location /static {
+        alias /usr/src/app/static;
+    }
+
+    location /media {
+        alias /usr/src/app/media;
+    }
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 3600;
+        client_max_body_size 100M;
+        proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
+    }
+
+    # Requires NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
+    resolver ${NGINX_LOCAL_RESOLVERS};
+}
