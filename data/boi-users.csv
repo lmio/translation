@@ -1,0 +1,13 @@
+username,raw_password,country,language,num_of_contestants
+DEU,DEU,DEU,de,4
+DNK,DNK,DNK,da,4
+EST,EST,EST,et,4
+FIN,FIN,FIN,fi,4
+GEO,GEO,GEO,ka,4
+ISL,ISL,ISL,is,4
+LTU,LTU,LTU,lt,4
+LVA,LVA,LVA,lv,4
+NOR,NOR,NOR,nb,4
+POL,POL,POL,pl,4
+SWE,SWE,SWE,sv,4
+UKR,UKR,UKR,uk,4
