@@ -22,8 +22,9 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_read_timeout 3600;
         client_max_body_size 100M;
-        proxy_pass http://@BACKEND_HOST@:@BACKEND_PORT@;
+        proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
     }
 
-    include /etc/nginx/resolver;
+    # Requires NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
+    resolver ${NGINX_LOCAL_RESOLVERS};
 }

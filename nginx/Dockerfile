@@ -1,7 +1,6 @@
 FROM nginx:alpine
 RUN rm /etc/nginx/conf.d/default.conf
-COPY conf.d/ /etc/nginx/conf.d/
-COPY docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
-CMD ["nginx", "-g", "daemon off;"]
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY templates/ /etc/nginx/templates/
+ENV NGINX_ENTRYPOINT_LOCAL_RESOLVERS 1
+ENV BACKEND_HOST app
+ENV BACKEND_PORT 9000
