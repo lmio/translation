@@ -6,10 +6,10 @@ services:
     restart: always
     build: ./
     volumes:
-    - ioi_static:/usr/src/app/static/
-    - ioi_media:/usr/src/app/media/
+      - ioi_static:/usr/src/app/static/
+      - ioi_media:/usr/src/app/media/
     depends_on:
-    - redis
+      - redis
     env_file:
       # See .env.app.example for the template.
       - .env.app.prod
@@ -18,12 +18,12 @@ services:
     restart: always
     build: ./nginx/
     ports:
-    - 9000:80
+      - 9000:80
     depends_on:
-    - app
+      - app
     volumes:
-    - ioi_static:/usr/src/app/static/:ro
-    - ioi_media:/usr/src/app/media/:ro
+      - ioi_static:/usr/src/app/static/:ro
+      - ioi_media:/usr/src/app/media/:ro
 
   redis:
     restart: always

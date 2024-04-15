@@ -6,14 +6,14 @@ services:
     restart: always
     build: ./
     ports:
-    - 9001:8000 # Debugging
+      - 9001:8000 # Debugging
     volumes:
-    - .:/usr/src/app/ # Debugging
-    - ioi_static:/usr/src/app/static/
-    - ioi_media:/usr/src/app/media/
+      - .:/usr/src/app/ # Debugging
+      - ioi_static:/usr/src/app/static/
+      - ioi_media:/usr/src/app/media/
     depends_on:
-    - postgres
-    - redis
+      - postgres
+      - redis
     env_file:
       - .env.app.dev
 
@@ -21,18 +21,18 @@ services:
     restart: always
     build: ./nginx/
     ports:
-    - 9000:80
+      - 9000:80
     depends_on:
-    - app
+      - app
     volumes:
-    - ioi_static:/usr/src/app/static/:ro
-    - ioi_media:/usr/src/app/media/:ro
+      - ioi_static:/usr/src/app/static/:ro
+      - ioi_media:/usr/src/app/media/:ro
 
   postgres:
     restart: always
     image: postgres:9.6-alpine
     volumes:
-    - ioi_pgdata:/var/lib/postgresql/data/
+      - ioi_pgdata:/var/lib/postgresql/data/
     env_file:
       - .env.app.dev
     environment:
