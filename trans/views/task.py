@@ -1,5 +1,6 @@
 from django.http.response import HttpResponseForbidden
 
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.core.urlresolvers import reverse
@@ -12,7 +13,7 @@ from trans.views.admin import ISCEditorCheckMixin
 
 class AddTask(ISCEditorCheckMixin, View):
     def post(self, request):
-        if request.user.username != "ISC":
+        if request.user.username != settings.SC_TITLE:
             return HttpResponseForbidden("You don't have access to this page")
         name = request.POST['name']
         contest_id = request.POST['contest']

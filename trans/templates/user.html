@@ -61,8 +61,8 @@
                 <th>Task</th>
                 <th>Status</th>
                 <th>Unleash Lock</th>
-                {% if user_name == "ISC" %}
-                <th>ISC Version</th>
+                {% if user_is_sc %}
+		<th>{{sc_title}} Version</th>
                 {% else %}
                 <th>Translation</th>
                 {% endif %}
@@ -88,7 +88,7 @@
                         </form>
                     {% endif %}
                 </td>
-                {% if user_name == "ISC" %}
+                {% if user_is_sc %}
                 <td>
                     <a href="{% url 'task_pdf' 'released' contest.slug task.name %}"
                        class="btn btn-default" title="PDF"><i class="fa fa-btns fa-file-pdf-o fa-lg"></i></a>

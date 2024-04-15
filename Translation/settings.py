@@ -208,6 +208,7 @@ USE_L10N = True
 USE_TZ = True
 
 TRANSLATION_EDIT_TIME_OUT = 120
+SC_TITLE = os.getenv('SC_TITLE', 'ISC')
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'

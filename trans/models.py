@@ -54,6 +54,10 @@ class User(DjangoUser):
     def is_editor(self):
         return self.groups.filter(name='editor').exists() or self.is_superuser
 
+    def is_sc(self):
+        # TODO: have ISC group to control this ACL.
+        return self.username == settings.SC_TITLE
+
 
 class Contest(models.Model):
     title = models.CharField(max_length=100, blank=False)
@@ -72,7 +76,7 @@ class Task(models.Model):
     order = models.IntegerField(default=1)
 
     def get_base_translation(self):
-        return Translation.objects.filter(user__username='ISC', task=self).first()
+        return Translation.objects.filter(user__username=settings.SC_TITLE, task=self).first()
 
     def publish_latest(self, release_note):
         base_trans = self.get_base_translation()
@@ -199,7 +203,7 @@ class Version(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
 
     def can_view_by(self, user):
-        if self.translation.user != user and self.translation.user.username != 'ISC':
+        if self.translation.user != user and self.translation.user.username != settings.SC_TITLE:
             return False
         return True
 

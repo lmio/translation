@@ -136,14 +136,16 @@ class UserTranslations(StaffCheckMixin, View):
             'tasks_lists': tasks_lists,
             'language': user.credentials(),
             'can_upload_final_pdf': can_upload_final_pdf,
-            'form': form
+            'form': form,
+            'user_is_sc': user.is_sc,
+            'sc_title': settings.SC_TITLE,
         })
 
 
 class UsersList(StaffCheckMixin, View):
     def _fetch_users(self):
         users = []
-        for user in (User.get_translators() | User.objects.filter(username='ISC')).distinct():
+        for user in (User.get_translators() | User.objects.filter(username=settings.SC_TITLE)).distinct():
             users.append({
                 'username': user.username,
                 'country_code': user.country.code,

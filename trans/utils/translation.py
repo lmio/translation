@@ -1,5 +1,7 @@
 import datetime
 
+from django.conf import settings
+
 from trans.utils import edit_token
 
 
@@ -32,7 +34,7 @@ def get_requested_user(request, task_type):
     if user.is_staff and 'user' in request.GET:
         user = User.objects.get(username=request.GET.get('user'))
     if task_type == 'released':
-        user = User.objects.get(username='ISC')
+        user = User.objects.get(username=settings.SC_TITLE)
     return user
 
 

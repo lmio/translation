@@ -78,6 +78,7 @@ class Home(LoginRequiredMixin, View):
             'is_editor': user.is_editor(),
             'has_contestants': user.has_contestants(),
             'is_translating': user.is_translating(),
+            'sc_title': settings.SC_TITLE,
         })
 
 class Healthcheck(View):
@@ -118,7 +119,8 @@ class Translations(LoginRequiredMixin, View):
             'taskID': task.id,
             'language_code': user.language.code,
             'username': user.username,
-            'direction': user.language.direction()
+            'direction': user.language.direction(),
+            'sc_title': settings.SC_TITLE,
         })
 
 
@@ -214,7 +216,7 @@ class TranslationPrint(TranslationView):
         translation = self._get_translation_by_contest_and_task_type(request, user, contest_slug, task_name, task_type)
         pdf_file_path = build_pdf(translation, task_type)
 
-        if translation.user.username == 'ISC':
+        if translation.user.username == settings.SC_TITLE:
             info_line = 'Release {}, deliver to {}'.format(translation.get_published_versions_count(), user.country.code)
         else:
             #info_line = 'Printed at {}'.format(translation.get_latest_version().create_time.strftime("%H:%M"))
@@ -227,7 +229,7 @@ class TranslationPrint(TranslationView):
                                       owner_country=user.country.code,
                                       group=contest_slug)
 
-        if translation.user == user and user.username != 'ISC':
+        if translation.user == user and user.username != settings.SC_TITLE:
             translation.save_last_version(release_note='Printed', saved=True)
 
         return JsonResponse({'success': True})
@@ -285,7 +287,7 @@ class Versions(LoginRequiredMixin, View):
 
         trans = get_trans_by_user_and_task(user, task)
         if task_type == 'released':
-            user = User.objects.filter(username='ISC').first()
+            user = User.objects.filter(username=settings.SC_TITLE).first()
             trans = task.get_base_translation()
 
         versions_list = []
@@ -309,7 +311,8 @@ class Versions(LoginRequiredMixin, View):
             'versions': versions_list,
             'direction': direction,
             'task_type': task_type,
-            'view_all': view_all
+            'view_all': view_all,
+            'sc_title': settings.SC_TITLE,
         })
 
 

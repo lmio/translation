@@ -76,7 +76,7 @@ def unreleased_pdf_path(contest_slug, task_name, user):
 
 # base pdf is a pdf of ISC
 def base_pdf_path(contest_slug, task_name, task_type):
-    user = User.objects.get(username='ISC')
+    user = User.objects.get(username=settings.SC_TITLE)
     return output_pdf_path(contest_slug, task_name, task_type, user)
 
 def build_pdf(translation, task_type):
@@ -102,7 +102,10 @@ def build_pdf(translation, task_type):
 
 
 def build_final_pdf(translation):
-    task_type = 'released' if translation.user.username == 'ISC' else 'task'
+    if translation.user.username == settings.SC_TITLE:
+        task_type = 'released'
+    else:
+        task_type = 'task'
     return build_pdf(translation, task_type)
 
 
